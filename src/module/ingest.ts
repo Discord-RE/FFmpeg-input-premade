@@ -38,7 +38,8 @@ export function ingestRtmp(port?: number) {
     command
         .inputFormat("flv")
         .addInputOption(
-            "-listen", "1"
+            "-listen", "1",
+            "-tcp_nodelay", "1"
         )
         .output(output)
         .outputFormat("matroska");
@@ -95,6 +96,7 @@ export function ingestRist(port?: number) {
     command
         .inputFormat("mpegts")
         .addInputOption(
+            "-buffer_size", "20",
             "-scan_all_pmts", "0"
         )
         .output(output)
