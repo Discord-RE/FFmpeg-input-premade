@@ -11,12 +11,16 @@
   "author": "",
   "license": "CCO-1.0",
   "devDependencies": {
+    "@dank074/discord-video-stream": "^4.2.0",
     "@types/fluent-ffmpeg": "^2.1.27",
     "@types/node": "^22.13.1",
+    "execa": "^9.5.2",
     "fluent-ffmpeg": "^2.1.3",
     "typescript": "^5.7.3"
   },
   "peerDependencies": {
+    "@dank074/discord-video-stream": "^4.2.0",
+    "execa": "^9.5.2",
     "fluent-ffmpeg": "^2.1.3"
   }
 }
