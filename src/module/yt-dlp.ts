@@ -20,6 +20,7 @@ export function ytdlp(link: string, format?: string, encoderOptions?: Partial<Ne
     const args = [
         ...(format ? ["--format", format] : []),
         "-o", "-",
+        "-R", "infinite",
         link
     ];
     const ytdlpProcess = $({ buffer: { stdout: false }})("yt-dlp", args);
