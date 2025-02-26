@@ -15,16 +15,45 @@ export async function getFormats(link: string)
     return JSON.parse(result.slice(1, result.length - 1)) as YtdlpFormat[];
 }
 
-export function ytdlp(link: string, format?: string, encoderOptions?: Partial<NewApi.EncoderOptions>)
-{
+export function ytdlp(
+    link: string,
+    format?: string,
+    encoderOptions?: Partial<NewApi.EncoderOptions>,
+    cancelSignal?: AbortSignal,
+) {
     const args = [
         ...(format ? ["--format", format] : []),
-        "-o", "-",
-        "-R", "infinite",
-        link
+        "-o",
+        "-",
+        "-R",
+        "infinite",
+        link,
     ];
-    const ytdlpProcess = $({ buffer: { stdout: false }})("yt-dlp", args);
-    const { command, output } = NewApi.prepareStream(ytdlpProcess.stdout, encoderOptions);
-    command.on("end", () => ytdlpProcess.kill("SIGKILL"));
-    return { command, output, ytdlpProcess } 
+    const ytdlpProcess = $({
+        cancelSignal,
+        killSignal: "SIGINT",
+        buffer: { stdout: false },
+    })("yt-dlp", args);
+    ytdlpProcess.catch(() => {});
+    /**
+     * Dummy reader, if both yt-dlp and ffmpeg ends at the same time, yt-dlp
+     * can't end properly because stdout isn't drained
+     */
+    ytdlpProcess.stdout.on("data", () => {});
+    const { command, output, promise } = NewApi.prepareStream(
+        ytdlpProcess.stdout,
+        encoderOptions,
+        cancelSignal,
+    );
+    return {
+        output,
+        command: {
+            ytdlp: ytdlpProcess,
+            ffmpeg: command,
+        },
+        promise: {
+            ytdlp: ytdlpProcess,
+            ffmpeg: promise,
+        },
+    };
 }
