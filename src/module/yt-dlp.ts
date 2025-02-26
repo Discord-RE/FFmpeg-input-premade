@@ -22,7 +22,8 @@ export function ytdlp(
     cancelSignal?: AbortSignal,
 ) {
     const args = [
-        ...(format ? ["--format", format] : []),
+        "--format",
+        format ?? "bv*+ba/b",
         "-o",
         "-",
         "-R",
