@@ -54,7 +54,8 @@ export function ingestRtmp(port?: number, cancelSignal?: AbortSignal) {
         .audioFrequency(48000)
         .audioCodec("libopus")
         .audioBitrate("128k");
-    
+    cancelSignal?.addEventListener("abort", () => command.kill("SIGTERM"), { once: true });
+
     command.run();
     return {
         command: {
@@ -93,7 +94,8 @@ export function ingestSrt(port?: number, cancelSignal?: AbortSignal) {
         .audioFrequency(48000)
         .audioCodec("libopus")
         .audioBitrate("128k");
-    
+    cancelSignal?.addEventListener("abort", () => command.kill("SIGTERM"), { once: true });
+
     command.run();
     return {
         command: {
@@ -132,6 +134,7 @@ export function ingestRist(port?: number, cancelSignal?: AbortSignal) {
         .audioFrequency(48000)
         .audioCodec("libopus")
         .audioBitrate("128k");
+    cancelSignal?.addEventListener("abort", () => command.kill("SIGTERM"), { once: true });
 
     command.run();
     return {
