@@ -7,22 +7,20 @@ settings:
 importers:
 
   .:
-    devDependencies:
-      '@dank074/discord-video-stream':
-        specifier: ^5.0.0
-        version: 5.0.0(discord.js-selfbot-v13@3.6.0)(sodium-native@3.4.1)
-      '@types/fluent-ffmpeg':
-        specifier: ^2.1.27
-        version: 2.1.27
-      '@types/node':
-        specifier: ^22.13.1
-        version: 22.13.1
+    dependencies:
       execa:
         specifier: ^9.5.2
         version: 9.5.2
-      fluent-ffmpeg:
-        specifier: ^2.1.3
-        version: 2.1.3
+      fluent-ffmpeg-simplified:
+        specifier: ^0.1.0
+        version: 0.1.0
+    devDependencies:
+      '@dank074/discord-video-stream':
+        specifier: ^5.0.0
+        version: 5.0.0(discord.js-selfbot-v13@3.6.0)(sodium-native@3.4.1)(supports-color@7.2.0)
+      '@types/node':
+        specifier: ^22.13.1
+        version: 22.13.1
       typescript:
         specifier: ^5.7.3
         version: 5.7.3
@@ -76,9 +74,6 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
-
-  '@types/fluent-ffmpeg@2.1.27':
-    resolution: {integrity: sha512-QiDWjihpUhriISNoBi2hJBRUUmoj/BMTYcfz+F+ZM9hHWBYABFAE6hjP/TbCZC0GWwlpa3FzvHH9RzFeRusZ7A==}
 
   '@types/node@22.13.1':
     resolution: {integrity: sha512-jK8uzQlrvXqEU91UxiK5J7pKHyzgnI1Qnl0QDHIgVGuolJhRb9EEl28Cj9b3rGR8B2lhFCtvIm5os8lFnO/1Ew==}
@@ -164,12 +159,17 @@ packages:
   discord.js-selfbot-v13@3.6.0:
     resolution: {integrity: sha512-gGb18FblMt2e2pwhKMSLKqDLPw2yG3IbTNoZJKeMV9hJCivjn8gcqfhwhRbSHq0DNfDrKLjvCWY08/X8rIWnEA==}
     engines: {node: '>=18.17'}
+    deprecated: This version is deprecated.
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
 
   execa@9.5.2:
     resolution: {integrity: sha512-EHlpxMCpHWSAh1dgS6bVeoLAXGnJNdR93aabr4QCGbzOM73o5XmRfM/e5FUqsw3aagP8S8XEWUWFAxnRBnAF0Q==}
+    engines: {node: ^18.19.0 || >=20.5.0}
+
+  execa@9.6.1:
+    resolution: {integrity: sha512-9Be3ZoN4LmYR90tUoVu2te2BsbzHfhJyfEiAVfz7N5/zv+jduIfLrV2xdQXOHbaD6KgpGdO9PRPM1Y4Q9QkPkA==}
     engines: {node: ^18.19.0 || >=20.5.0}
 
   fast-deep-equal@3.1.3:
@@ -196,9 +196,13 @@ packages:
   flatstr@1.0.12:
     resolution: {integrity: sha512-4zPxDyhCyiN2wIAtSLI6gc82/EjqZc1onI4Mz/l0pWrAlsSfYH/2ZIcU+e3oA2wDwbzIWNKwa23F8rh6+DRWkw==}
 
+  fluent-ffmpeg-simplified@0.1.0:
+    resolution: {integrity: sha512-u3McLUh6H6/hhXYxfZcSGwCJAAlN8wsCCPZjVpaK9HIIvmjOB3G584H3PAWZb/ZQTHVKUrzhjNEYMXZXZjOR+g==}
+
   fluent-ffmpeg@2.1.3:
     resolution: {integrity: sha512-Be3narBNt2s6bsaqP6Jzq91heDgOEaDCJAXcE3qcma/EJBSy5FB4cvO31XBInuAuKBx8Kptf8dkhjK0IOru39Q==}
     engines: {node: '>=18'}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
@@ -214,6 +218,10 @@ packages:
 
   human-signals@8.0.0:
     resolution: {integrity: sha512-/1/GPCpDUCCYwlERiYjxoczfP0zfvZMU/OWgQPMya9AbAE24vseigFdhAMObpc8Q4lc/kjutPfUddDYyAmejnA==}
+    engines: {node: '>=18.18.0'}
+
+  human-signals@8.0.1:
+    resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
     engines: {node: '>=18.18.0'}
 
   ieee754@1.2.1:
@@ -387,6 +395,10 @@ packages:
   sonic-boom@4.2.0:
     resolution: {integrity: sha512-INb7TM37/mAcsGmc9hyyI6+QR3rR1zVRu36B0NeGXKnOOLiZOfER5SA+N7X7k3yUYRzLWafduTDvJAfDswwEww==}
 
+  string-argv@0.3.2:
+    resolution: {integrity: sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==}
+    engines: {node: '>=0.6.19'}
+
   string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
     engines: {node: '>=8'}
@@ -495,10 +507,10 @@ packages:
 
 snapshots:
 
-  '@dank074/discord-video-stream@5.0.0(discord.js-selfbot-v13@3.6.0)(sodium-native@3.4.1)':
+  '@dank074/discord-video-stream@5.0.0(discord.js-selfbot-v13@3.6.0)(sodium-native@3.4.1)(supports-color@7.2.0)':
     dependencies:
       '@libav.js/variant-webcodecs': 6.5.7
-      debug-level: 3.2.1
+      debug-level: 3.2.1(supports-color@7.2.0)
       discord.js-selfbot-v13: 3.6.0
       fluent-ffmpeg: 2.1.3
       p-debounce: 4.0.0
@@ -548,10 +560,6 @@ snapshots:
   '@sec-ant/readable-stream@0.4.1': {}
 
   '@sindresorhus/merge-streams@4.0.0': {}
-
-  '@types/fluent-ffmpeg@2.1.27':
-    dependencies:
-      '@types/node': 22.13.1
 
   '@types/node@22.13.1':
     dependencies:
@@ -605,7 +613,7 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  debug-level@3.2.1:
+  debug-level@3.2.1(supports-color@7.2.0):
     dependencies:
       asyncc: 2.0.8
       chalk: 4.1.2
@@ -615,13 +623,15 @@ snapshots:
       ms: 2.1.3
       sonic-boom: 4.2.0
     optionalDependencies:
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
-  debug@4.4.0:
+  debug@4.4.0(supports-color@7.2.0):
     dependencies:
       ms: 2.1.3
+    optionalDependencies:
+      supports-color: 7.2.0
     optional: true
 
   decamelize@1.2.0: {}
@@ -670,6 +680,21 @@ snapshots:
       strip-final-newline: 4.0.0
       yoctocolors: 2.1.1
 
+  execa@9.6.1:
+    dependencies:
+      '@sindresorhus/merge-streams': 4.0.0
+      cross-spawn: 7.0.6
+      figures: 6.1.0
+      get-stream: 9.0.1
+      human-signals: 8.0.1
+      is-plain-obj: 4.1.0
+      is-stream: 4.0.1
+      npm-run-path: 6.0.0
+      pretty-ms: 9.2.0
+      signal-exit: 4.1.0
+      strip-final-newline: 4.0.0
+      yoctocolors: 2.1.1
+
   fast-deep-equal@3.1.3: {}
 
   fast-safe-stringify@2.1.1: {}
@@ -696,6 +721,11 @@ snapshots:
 
   flatstr@1.0.12: {}
 
+  fluent-ffmpeg-simplified@0.1.0:
+    dependencies:
+      execa: 9.6.1
+      string-argv: 0.3.2
+
   fluent-ffmpeg@2.1.3:
     dependencies:
       async: 0.2.10
@@ -711,6 +741,8 @@ snapshots:
   has-flag@4.0.0: {}
 
   human-signals@8.0.0: {}
+
+  human-signals@8.0.1: {}
 
   ieee754@1.2.1: {}
 
@@ -831,6 +863,8 @@ snapshots:
   sonic-boom@4.2.0:
     dependencies:
       atomic-sleep: 1.0.0
+
+  string-argv@0.3.2: {}
 
   string-width@4.2.3:
     dependencies:
