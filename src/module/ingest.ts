@@ -16,6 +16,8 @@ import { randomInclusive } from "../utils.js";
  * - Keyframe duration: 1s
  */
 
+export type IngestProtocol = 'rtmp' | 'srt' | 'rist';
+
 function addLowLatencyFlags(command: FFmpegCommand)
 {
     command
@@ -29,99 +31,54 @@ function addLowLatencyFlags(command: FFmpegCommand)
         )
 }
 
-export function ingestRtmp(port?: number, cancelSignal?: AbortSignal) {
+export function ingest(protocol: IngestProtocol, port?: number, cancelSignal?: AbortSignal) {
     cancelSignal?.throwIfAborted();
     const _port = port ?? randomInclusive(40000, 50000);
-    const host = `rtmp://localhost:${_port}`;
+
+    let host: string;
+    let inputUrl: string;
+    let inputFormat: string;
+    let inputOptions: string[];
+
+    switch (protocol) {
+        case 'rtmp':
+            host = `rtmp://localhost:${_port}`;
+            inputUrl = host;
+            inputFormat = 'flv';
+            inputOptions = [
+                "-listen", "1",
+                "-tcp_nodelay", "1",
+                "-rtmp_buffer", "20",
+            ];
+            break;
+        case 'srt':
+            host = `srt://localhost:${_port}?transtype=live&smoother=live`;
+            inputUrl = host;
+            inputFormat = 'mpegts';
+            inputOptions = [
+                "-mode", "listener",
+                "-latency", "5000",
+                "-scan_all_pmts", "0",
+            ];
+            break;
+        case 'rist':
+            host = `rist://localhost:${_port}`;
+            inputUrl = `rist://@localhost:${_port}`;
+            inputFormat = 'mpegts';
+            inputOptions = [
+                "-buffer_size", "20",
+                "-scan_all_pmts", "0",
+            ];
+            break;
+    }
+
     const output = new PassThrough();
     const command = new FFmpegCommand();
-    command.input(host);
+    command.input(inputUrl);
     addLowLatencyFlags(command);
     command
-        .inputFormat("flv")
-        .inputOptions(
-            "-listen", "1",
-            "-tcp_nodelay", "1",
-            "-rtmp_buffer", "20",
-        )
-        .output(output)
-        .format("matroska");
-
-    command.outputOptions("-map 0:v");
-    command.videoCodec("copy");
-    command
-        .outputOptions("-map 0:a?")
-        .audioChannels(2)
-        .audioFrequency(48000)
-        .audioCodec("libopus")
-        .audioBitrate("128k");
-    const promise = command.run(cancelSignal);
-    return {
-        command: {
-            ffmpeg: command,
-        },
-        promise: {
-            ffmpeg: promise,
-        },
-        output,
-        host,
-    };
-}
-
-export function ingestSrt(port?: number, cancelSignal?: AbortSignal) {
-    cancelSignal?.throwIfAborted();
-    const _port = port ?? randomInclusive(40000, 50000);
-    const host = `srt://localhost:${_port}?transtype=live&smoother=live`;
-    const output = new PassThrough();
-    const command = new FFmpegCommand();
-    command.input(host);
-    addLowLatencyFlags(command);
-    command
-        .inputFormat("mpegts")
-        .inputOptions(
-            "-mode", "listener",
-            "-latency", "5000", // 5000 microseconds
-            "-scan_all_pmts", "0"
-        )
-        .output(output)
-        .format("matroska");
-
-    command.outputOptions("-map 0:v");
-    command.videoCodec("copy");
-    command
-        .outputOptions("-map 0:a?")
-        .audioChannels(2)
-        .audioFrequency(48000)
-        .audioCodec("libopus")
-        .audioBitrate("128k");
-    const promise = command.run(cancelSignal);
-    return {
-        command: {
-            ffmpeg: command,
-        },
-        promise: {
-            ffmpeg: promise,
-        },
-        output,
-        host,
-    };
-}
-
-export function ingestRist(port?: number, cancelSignal?: AbortSignal) {
-    cancelSignal?.throwIfAborted();
-    const _port = port ?? randomInclusive(40000, 50000);
-    const hostListener = `rist://@localhost:${_port}`;
-    const host = `rist://localhost:${_port}`
-    const output = new PassThrough();
-    const command = new FFmpegCommand();
-    command.input(hostListener);
-    addLowLatencyFlags(command);
-    command
-        .inputFormat("mpegts")
-        .inputOptions(
-            "-buffer_size", "20",
-            "-scan_all_pmts", "0"
-        )
+        .inputFormat(inputFormat)
+        .inputOptions(...inputOptions)
         .output(output)
         .format("matroska");
 
